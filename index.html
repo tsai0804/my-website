@@ -1,9 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
-    <title>My Site</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蔡奇軒的個人網站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        header {
+            background: #0078d7;
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 2.5rem;
+        }
+        header p {
+            font-size: 1.2rem;
+        }
+        nav {
+            text-align: center;
+            margin: 1rem 0;
+        }
+        nav a {
+            text-decoration: none;
+            color: #0078d7;
+            margin: 0 1rem;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        section {
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .about {
+            background: #f4f4f4;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+        footer {
+            text-align: center;
+            background: #333;
+            color: white;
+            padding: 1rem 0;
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello 蔡奇軒 Pages!</h1>
+    <header>
+        <h1>歡迎來到蔡奇軒的個人網站</h1>
+        <p>探索我的興趣與更多內容！</p>
+    </header>
+    <nav>
+        <a href="#about">關於我</a>
+        <a href="#contact">聯絡我</a>
+    </nav>
+    <section id="about">
+        <div class="about">
+            <h2>關於我</h2>
+            <p>你好！我是蔡奇軒，一名學生。我熱愛棒球，是一位忠實的棒球迷！無論是觀賽還是討論棒球，我都非常享受這項運動帶來的樂趣。</p>
+        </div>
+    </section>
+    <section id="contact">
+        <h2>聯絡我</h2>
+        <p>如果你也喜歡棒球或有興趣交流，可以透過以下方式找到我：</p>
+        <ul>
+            <li>Email: <a href="mailto:your-email@example.com">your-email@example.com</a></li>
+            <li>GitHub: <a href="https://github.com/tsai0804" target="_blank">tsai0804</a></li>
+        </ul>
+    </section>
+    <footer>
+        <p>&copy; 2024 蔡奇軒. 保留所有權利。</p>
+    </footer>
 </body>
 </html>
