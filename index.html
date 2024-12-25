@@ -3,87 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>蔡奇軒的個人網站</title>
+    <title>井字遊戲</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
         }
-        header {
+        h1 {
+            margin: 20px 0;
+            color: #0078d7;
+        }
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 5px;
+            justify-content: center;
+            margin: 20px auto;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border: 2px solid #0078d7;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0078d7;
+            text-align: center;
+            line-height: 100px;
+            cursor: pointer;
+        }
+        .cell.taken {
+            pointer-events: none;
+        }
+        #reset {
             background: #0078d7;
             color: white;
-            padding: 1rem 0;
-            text-align: center;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
         }
-        header h1 {
-            font-size: 2.5rem;
+        #reset:hover {
+            background: #005bb5;
         }
-        header p {
+        #message {
+            margin-top: 20px;
             font-size: 1.2rem;
-        }
-        nav {
-            text-align: center;
-            margin: 1rem 0;
-        }
-        nav a {
-            text-decoration: none;
-            color: #0078d7;
-            margin: 0 1rem;
-            font-weight: bold;
-        }
-        nav a:hover {
-            text-decoration: underline;
-        }
-        section {
-            padding: 2rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .about {
-            background: #f4f4f4;
-            padding: 2rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-        }
-        footer {
-            text-align: center;
-            background: #333;
-            color: white;
-            padding: 1rem 0;
+            color: #333;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>歡迎來到蔡奇軒的個人網站</h1>
-        <p>探索我的興趣與更多內容！</p>
-    </header>
-    <nav>
-        <a href="#about">關於我</a>
-        <a href="#contact">聯絡我</a>
-    </nav>
-    <section id="about">
-        <div class="about">
-            <h2>關於我</h2>
-            <p>你好！我是蔡奇軒，一名學生。我熱愛棒球，是一位忠實的棒球迷！無論是觀賽還是討論棒球，我都非常享受這項運動帶來的樂趣。</p>
-        </div>
-    </section>
-    <section id="contact">
-        <h2>聯絡我</h2>
-        <p>如果你也喜歡棒球或有興趣交流，可以透過以下方式找到我：</p>
-        <ul>
-            <li>Email: <a href="mailto:your-email@example.com">your-email@example.com</a></li>
-            <li>GitHub: <a href="https://github.com/tsai0804" target="_blank">tsai0804</a></li>
-        </ul>
-    </section>
-    <footer>
-        <p>&copy; 2024 蔡奇軒. 保留所有權利。</p>
-    </footer>
+    <h1>井字遊戲</h1>
+    <div id="game-board"></div>
+    <button id="reset">重新開始</button>
+    <div id="message"></div>
+
+    <script>
+        const board = document.getElementById('game-board');
+        const resetButton = document.getElementById('reset');
+        const message = document.getElementById('message');
+        let currentPlayer = 'X';
+        let gameActive = true;
+        let gameState = ['', '', '', '', '', '', '', '', ''];
+
+        // 勝利條件
+        const winningConditions = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        // 初始化遊戲
+        function initializeGame() {
+            board.innerHTML = '';
+            gameState = ['', '', '', '', '', '', '', '', ''];
+            gameActive = true;
+            currentPlayer = 'X';
+            message.textContent = `輪到玩家 ${currentPlayer}`;
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.dataset.index = i;
+                cell.addEventListener('click', handleCellClick);
+                board.appendChild(cell);
+            }
+        }
+
+        // 處理格子點擊
+        function handleCellClick(event) {
+            const cell = event.target;
+            const index = cell.dataset.index;
+
+            if (gameState[index] !== '' || !gameActive) return;
+
+            gameState[index] = currentPlayer;
+            cell.textContent = currentPlayer;
+            cell.classList.add('taken');
+
+            if (checkWin()) {
+                message.textContent = `玩家 ${currentPlayer} 獲勝！`;
+                gameActive = false;
+                return;
+            }
+
+            if (gameState.every(cell => cell !== '')) {
+                message.textContent = '平局！';
+                gameActive = false;
+                return;
+            }
+
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            message.textContent = `輪到玩家 ${currentPlayer}`;
+        }
+
+        // 檢查勝利條件
+        function checkWin() {
+            return winningConditions.some(condition => {
+                return condition.every(index => gameState[index] === currentPlayer);
+            });
+        }
+
+        // 重新開始遊戲
+        resetButton.addEventListener('click', initializeGame);
+
+        // 開始遊戲
+        initializeGame();
+    </script>
 </body>
 </html>
